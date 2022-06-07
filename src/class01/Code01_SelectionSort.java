@@ -26,6 +26,16 @@ public class Code01_SelectionSort {
 		arr[j] = tmp;
 	}
 
+	public static void selectionSort2(int[] arr) {
+		for (int i = 0; i < arr.length - 1; i++) {
+			int minIndex = i;
+			for (int j = i + 1; j < arr.length; j++) {
+				minIndex = arr[minIndex] > arr[j] ? j : minIndex;
+			}
+			swap(arr, minIndex, i);
+		}
+	}
+
 	// for test
 	public static void comparator(int[] arr) {
 		Arrays.sort(arr);
@@ -95,7 +105,8 @@ public class Code01_SelectionSort {
 		for (int i = 0; i < testTime; i++) {
 			int[] arr1 = generateRandomArray(maxSize, maxValue);
 			int[] arr2 = copyArray(arr1);
-			selectionSort(arr1);
+//			selectionSort(arr1);
+			selectionSort2(arr1);
 			comparator(arr2);
 			if (!isEqual(arr1, arr2)) {
 				succeed = false;
@@ -106,10 +117,10 @@ public class Code01_SelectionSort {
 		}
 		System.out.println(succeed ? "Nice!" : "Fucking fucked!");
 
-		int[] arr = generateRandomArray(maxSize, maxValue);
-		printArray(arr);
-		selectionSort(arr);
-		printArray(arr);
+//		int[] arr = generateRandomArray(maxSize, maxValue);
+//		printArray(arr);
+//		selectionSort(arr);
+//		printArray(arr);
 	}
 
 }
