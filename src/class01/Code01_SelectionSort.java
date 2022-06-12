@@ -36,6 +36,16 @@ public class Code01_SelectionSort {
 		}
 	}
 
+	public static void selectionSort3(int[] arr) {
+		for (int i = 0; i < arr.length - 1; i++) {
+			int index = i;
+			for (int j = i + 1; j < arr.length; j++) {
+				index = arr[index] > arr[j] ? j : index;
+			}
+			swap(arr, index, i);
+		}
+	}
+
 	// for test
 	public static void comparator(int[] arr) {
 		Arrays.sort(arr);
@@ -106,7 +116,7 @@ public class Code01_SelectionSort {
 			int[] arr1 = generateRandomArray(maxSize, maxValue);
 			int[] arr2 = copyArray(arr1);
 //			selectionSort(arr1);
-			selectionSort2(arr1);
+			selectionSort3(arr1);
 			comparator(arr2);
 			if (!isEqual(arr1, arr2)) {
 				succeed = false;

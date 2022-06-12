@@ -63,6 +63,31 @@ public class Code03_KM {
 		return ans;
 	}
 
+
+	// 请保证arr中，只有一种数出现了K次，其他数都出现了M次
+	public static int onlyKTimes2(int[] arr, int k, int m) {
+		int[] help = new int[32];
+		for (int num : arr) {
+			for (int i = 0; i < 32; i++) {
+				help[i] += (num >> i) & 1;
+			}
+		}
+		int ans = 0;
+		for (int i = 0; i < 32; i++) {
+			if (help[i] % m == k) {
+				ans |= 1 << i;
+			}
+		}
+		int real = 0;
+		for (int num : arr) {
+			if (num == ans) {
+				real++;
+			}
+		}
+		return real == k ? ans : -1;
+	}
+
+
 	public static void mapCreater(HashMap<Integer, Integer> map) {
 		int value = 1;
 		for (int i = 0; i < 32; i++) {
@@ -157,7 +182,7 @@ public class Code03_KM {
 			}
 			int[] arr = randomArray(kinds, range, k, m);
 			int ans1 = test(arr, k, m);
-			int ans2 = onlyKTimes(arr, k, m);
+			int ans2 = onlyKTimes2(arr, k, m);
 			int ans3 = km(arr, k, m);
 			if (ans1 != ans2 || ans1 != ans3) {
 				System.out.println(ans1);

@@ -27,6 +27,17 @@ public class Code03_InsertionSort {
 		}
 	}
 
+
+
+	public static void insertionSort3(int[] arr) {
+		for (int i = 1; i < arr.length; i++) {
+			for (int j = i; j > 0 && arr[j - 1] > arr[j]; j--) {
+				swap(arr, j - 1, j);
+			}
+		}
+	}
+
+
 	// i和j是一个位置的话，会出错
 	public static void swap(int[] arr, int i, int j) {
 		arr[i] = arr[i] ^ arr[j];
@@ -103,7 +114,7 @@ public class Code03_InsertionSort {
 			int[] arr = generateRandomArray(maxSize, maxValue);
 			int[] arr1 = copyArray(arr);
 			int[] arr2 = copyArray(arr);
-			insertionSort2(arr1);
+			insertionSort3(arr1);
 			comparator(arr2);
 			if (!isEqual(arr1, arr2)) {
 				// 打印arr1
