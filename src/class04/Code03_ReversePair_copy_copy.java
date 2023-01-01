@@ -1,6 +1,6 @@
 package src.class04;
 
-public class Code03_ReversePair_copy {
+public class Code03_ReversePair_copy_copy {
 
 	public static int reverPairNumber(int[] arr) {
 		if (arr == null || arr.length < 2) {
@@ -17,17 +17,16 @@ public class Code03_ReversePair_copy {
 		if (l == r) {
 			return 0;
 		}
-		// l < r
-		int mid = l + ((r - l) >> 1);
-		return process(arr, l, mid) + process(arr, mid + 1, r) + merge(arr, l, mid, r);
+		int m = l + ((r - l) >> 1);
+		return process(arr, l, m) + process(arr, m + 1, r) + merge(arr, l, m, r);
 	}
 
 	public static int merge(int[] arr, int L, int m, int r) {
 		int[] help = new int[r - L + 1];
 		int p1 = m;
 		int p2 = r;
-		int res = 0;
 		int index = help.length - 1;
+		int res = 0;
 		while (p1 >= L && p2 > m) {
 			res += arr[p1] > arr[p2] ? p2 - m : 0;
 			help[index--] = arr[p1] > arr[p2] ? arr[p1--] : arr[p2--];

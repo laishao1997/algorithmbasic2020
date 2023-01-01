@@ -1,60 +1,61 @@
 package src.class04;
 
-public class Code03_ReversePair_copy {
+public class Code02_SmallSum_copy_copy {
 
-	public static int reverPairNumber(int[] arr) {
+	public static int smallSum(int[] arr) {
 		if (arr == null || arr.length < 2) {
 			return 0;
 		}
 		return process(arr, 0, arr.length - 1);
 	}
 
-	// arr[L..R]既要排好序，也要求逆序对数量返回
-	// 所有merge时，产生的逆序对数量，累加，返回
-	// 左 排序 merge并产生逆序对数量
-	// 右 排序 merge并产生逆序对数量
+	// arr[L..R]既要排好序，也要求小和返回
+	// 所有merge时，产生的小和，累加
+	// 左 排序   merge
+	// 右 排序  merge
+	// merge
 	public static int process(int[] arr, int l, int r) {
 		if (l == r) {
 			return 0;
 		}
-		// l < r
-		int mid = l + ((r - l) >> 1);
-		return process(arr, l, mid) + process(arr, mid + 1, r) + merge(arr, l, mid, r);
+		int M = l + ((r - l) >> 1);
+		return process(arr, l, M) + process(arr, M + 1, r) + merge(arr, l, M, r);
 	}
 
 	public static int merge(int[] arr, int L, int m, int r) {
 		int[] help = new int[r - L + 1];
-		int p1 = m;
-		int p2 = r;
-		int res = 0;
-		int index = help.length - 1;
-		while (p1 >= L && p2 > m) {
-			res += arr[p1] > arr[p2] ? p2 - m : 0;
-			help[index--] = arr[p1] > arr[p2] ? arr[p1--] : arr[p2--];
+		int left = L;
+		int right = m + 1;
+		int indexH = 0;
+		int ans = 0;
+		while (left <= m && right <= r) {
+			ans += arr[left] < arr[right] ? (r - right + 1) * arr[left] : 0;
+			help[indexH++] = arr[left] < arr[right] ? arr[left++] : arr[right++];
 		}
-		while (p1 >= L) {
-			help[index--] = arr[p1--];
+		while (left <= m) {
+			help[indexH++] = arr[left++];
 		}
-		while (p2 > m) {
-			help[index--] = arr[p2--];
+		while (right <= r) {
+			help[indexH++] = arr[right++];
 		}
 		for (int i = 0; i < help.length; i++) {
 			arr[L + i] = help[i];
 		}
-		return res;
+		return ans;
 	}
 
 	// for test
 	public static int comparator(int[] arr) {
-		int ans = 0;
-		for (int i = 0; i < arr.length; i++) {
-			for (int j = i + 1; j < arr.length; j++) {
-				if (arr[i] > arr[j]) {
-					ans++;
-				}
+		if (arr == null || arr.length < 2) {
+			return 0;
+		}
+		int res = 0;
+		for (int i = 1; i < arr.length; i++) {
+			for (int j = 0; j < i; j++) {
+				res += arr[j] < arr[i] ? arr[j] : 0;
 			}
 		}
-		return ans;
+		return res;
 	}
 
 	// for test
@@ -113,18 +114,18 @@ public class Code03_ReversePair_copy {
 		int testTime = 500000;
 		int maxSize = 100;
 		int maxValue = 100;
-		System.out.println("测试开始");
+		boolean succeed = true;
 		for (int i = 0; i < testTime; i++) {
 			int[] arr1 = generateRandomArray(maxSize, maxValue);
 			int[] arr2 = copyArray(arr1);
-			if (reverPairNumber(arr1) != comparator(arr2)) {
-				System.out.println("Oops!");
+			if (smallSum(arr1) != comparator(arr2)) {
+				succeed = false;
 				printArray(arr1);
 				printArray(arr2);
 				break;
 			}
 		}
-		System.out.println("测试结束");
+		System.out.println(succeed ? "Nice!" : "Fucking fucked!");
 	}
 
 }
