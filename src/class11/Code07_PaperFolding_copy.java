@@ -17,7 +17,7 @@ public class Code07_PaperFolding_copy {
 			return;
 		}
 		process(i + 1, N, true);
-		System.out.println(down ? i + "凹" : i + "凸");
+		System.out.println(down ? "凹" : "凸");
 		process(i + 1, N, false);
 	}
 

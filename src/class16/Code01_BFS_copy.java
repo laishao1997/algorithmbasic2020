@@ -18,11 +18,11 @@ public class Code01_BFS_copy {
 		set.add(start);
 		while (!queue.isEmpty()) {
 			Node cur = queue.poll();
-			System.out.println(cur.value);
-			for (Node next : cur.nexts) {
-				if (!set.contains(next)) {
-					queue.add(next);
-					set.add(next);
+			System.out.println("" + cur.value);
+			for (Node node : cur.nexts) {
+				if (!set.contains(node)) {
+					set.add(node);
+					queue.add(node);
 				}
 			}
 		}

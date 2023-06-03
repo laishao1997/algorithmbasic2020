@@ -12,7 +12,6 @@ public class Code02_CardsInLine_copy {
         return Math.max(first, second);
     }
 
-    // arr[L..R]，先手获得的最好分数返回
     public static int f1(int[] arr, int L, int R) {
         if (L == R) {
             return arr[L];
@@ -45,9 +44,9 @@ public class Code02_CardsInLine_copy {
                 gmap[i][j] = -1;
             }
         }
-        int first = f2(arr, 0, arr.length - 1, fmap, gmap);
-        int second = g2(arr, 0, arr.length - 1, fmap, gmap);
-        return Math.max(first, second);
+        int first = f2(arr, 0, N - 1, fmap, gmap);
+        int sec = g2(arr, 0, N - 1, fmap, gmap);
+        return Math.max(first, sec);
     }
 
     // arr[L..R]，先手获得的最好分数返回
@@ -74,8 +73,8 @@ public class Code02_CardsInLine_copy {
         }
         int ans = 0;
         if (L != R) {
-            int p1 = f2(arr, L + 1, R, fmap, gmap); // 对手拿走了L位置的数
-            int p2 = f2(arr, L, R - 1, fmap, gmap); // 对手拿走了R位置的数
+            int p1 = f2(arr, L + 1, R, fmap, gmap);
+            int p2 = f2(arr, L, R - 1, fmap, gmap);
             ans = Math.min(p1, p2);
         }
         gmap[L][R] = ans;
@@ -87,19 +86,23 @@ public class Code02_CardsInLine_copy {
             return 0;
         }
         int N = arr.length;
-        int[][] fmap = new int[N + 1][N + 1];
-        int[][] gmap = new int[N + 1][N + 1];
+        int[][] fmap = new int[N][N];
+        int[][] gmap = new int[N][N];
         for (int i = 0; i < N; i++) {
             fmap[i][i] = arr[i];
         }
-        for (int col = 1; col < N; col++) {
-            int L = 0;
-            int R = col;
-            while (R < N) {
-                fmap[L][R] = Math.max(arr[L] + gmap[L + 1][R], arr[R] + gmap[L][R - 1]);
-                gmap[L][R] = Math.min(fmap[L + 1][R], fmap[L][R - 1]);
-                L++;
-                R++;
+        for (int startCol = 1; startCol < N; startCol++) {
+            int row = 0;
+            int col = startCol;
+            while (col < N) {
+                int p1 = arr[row] + gmap[row + 1][col];
+                int p2 = arr[col] + gmap[row][col - 1];
+                fmap[row][col] = Math.max(p1, p2);
+                int gp1 = fmap[row + 1][col];
+                int gp2 = fmap[row][col - 1];
+                gmap[row][col] = Math.min(gp1, gp2);
+                row++;
+                col++;
             }
         }
         return Math.max(fmap[0][N - 1], gmap[0][N - 1]);

@@ -19,7 +19,7 @@ public class Code03_StickersToSpellWord {
 		}
 		int min = Integer.MAX_VALUE;
 		for (String first : stickers) {
-			String rest = minus(target, first);
+			String rest = minus(first, target);
 			if (rest.length() != target.length()) {
 				min = Math.min(min, process1(stickers, rest));
 			}
@@ -148,4 +148,11 @@ public class Code03_StickersToSpellWord {
 		return ans;
 	}
 
+
+	public static void main(String[] args) {
+		String str1 = "with";
+		String str2 = "thehat";
+		String minus = minus(str1, str2);
+		System.out.println(minus);
+	}
 }

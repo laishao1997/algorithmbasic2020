@@ -11,28 +11,28 @@ import java.util.Stack;
 public class Code02_NumberOfIslands_copy {
 
 	public static int numIslands3(char[][] board) {
-		int islands = 0;
+		int count = 0;
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[0].length; j++) {
 				if (board[i][j] == '1') {
-					islands++;
+					count++;
 					infect(board, i, j);
 				}
 			}
 		}
-		return islands;
+		return count;
 	}
 
 	// 从(i,j)这个位置出发，把所有练成一片的'1'字符，变成0
 	public static void infect(char[][] board, int i, int j) {
-		if (i < 0 || i == board.length || j < 0 || j == board[0].length || board[i][j] != '1') {
+		if (i < 0 || board.length <= i || j < 0 || j >= board[0].length || board[i][j] != '1') {
 			return;
 		}
 		board[i][j] = 0;
 		infect(board, i - 1, j);
 		infect(board, i + 1, j);
-		infect(board, i, j - 1);
 		infect(board, i, j + 1);
+		infect(board, i, j - 1);
 	}
 
 
@@ -142,53 +142,52 @@ public class Code02_NumberOfIslands_copy {
 	public static int numIslands2(char[][] board) {
 		int row = board.length;
 		int col = board[0].length;
-		UnionFind2 uf = new UnionFind2(board);
-		for (int j = 1; j < col; j++) {
-			if (board[0][j - 1] == '1' && board[0][j] == '1') {
-				uf.union(0, j - 1, 0, j);
+		UnionFind2 unionFind2 = new UnionFind2(board);
+		for (int i = 1; i < col; i++) {
+			if (board[0][i - 1] == '1' && board[0][i] == '1') {
+				unionFind2.union(0, i - 1, 0, i);
 			}
 		}
 		for (int i = 1; i < row; i++) {
 			if (board[i - 1][0] == '1' && board[i][0] == '1') {
-				uf.union(i - 1, 0, i, 0);
+				unionFind2.union(i - 1, 0, i, 0);
 			}
 		}
 		for (int i = 1; i < row; i++) {
 			for (int j = 1; j < col; j++) {
 				if (board[i][j] == '1') {
 					if (board[i][j - 1] == '1') {
-						uf.union(i, j - 1, i, j);
+						unionFind2.union(i, j - 1, i, j);
 					}
 					if (board[i - 1][j] == '1') {
-						uf.union(i - 1, j, i, j);
+						unionFind2.union(i - 1, j, i, j);
 					}
 				}
 			}
 		}
-		return uf.sets();
+		return unionFind2.sets();
 	}
 
 	public static class UnionFind2 {
-		private int[] parent;
+		private int[] parents;
 		private int[] size;
 		private int[] help;
 		private int col;
 		private int sets;
 
+
 		public UnionFind2(char[][] board) {
 			col = board[0].length;
+			parents = new int[board.length * col];
+			size = new int[board.length * col];
+			help = new int[board.length * col];
 			sets = 0;
-			int row = board.length;
-			int len = row * col;
-			parent = new int[len];
-			size = new int[len];
-			help = new int[len];
-			for (int r = 0; r < row; r++) {
-				for (int c = 0; c < col; c++) {
-					if (board[r][c] == '1') {
-						int i = index(r, c);
-						parent[i] = i;
-						size[i] = 1;
+			for (int i = 0; i < board.length; i++) {
+				for (int j = 0; j < col; j++) {
+					if (board[i][j] == '1') {
+						int index = index(i, j);
+						parents[index] = index;
+						size[index] = 1;
 						sets++;
 					}
 				}
@@ -201,16 +200,16 @@ public class Code02_NumberOfIslands_copy {
 		}
 
 		// 原始位置 -> 下标
-		private int find(int i) {
-			int hi = 0;
-			while (i != parent[i]) {
-				help[hi++] = i;
-				i = parent[i];
+		public int find(int index) {
+			int k = 0;
+			while (index != parents[index]) {
+				help[k++] = index;
+				index = parents[index];
 			}
-			for (hi--; hi >= 0; hi--) {
-				parent[help[hi]] = i;
+			while (k > 0) {
+				parents[help[--k]] = index;
 			}
-			return i;
+			return index;
 		}
 
 		public void union(int r1, int c1, int r2, int c2) {
@@ -220,11 +219,11 @@ public class Code02_NumberOfIslands_copy {
 			int f2 = find(i2);
 			if (f1 != f2) {
 				if (size[f1] >= size[f2]) {
+					parents[f2] = f1;
 					size[f1] += size[f2];
-					parent[f2] = f1;
 				} else {
+					parents[f1] = f2;
 					size[f2] += size[f1];
-					parent[f1] = f2;
 				}
 				sets--;
 			}
@@ -233,7 +232,6 @@ public class Code02_NumberOfIslands_copy {
 		public int sets() {
 			return sets;
 		}
-
 	}
 
 	// 为了测试

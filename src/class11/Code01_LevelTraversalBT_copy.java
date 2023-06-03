@@ -20,15 +20,15 @@ public class Code01_LevelTraversalBT_copy {
 			return;
 		}
 		Queue<Node> queue = new LinkedList<>();
-		queue.add(head);
+		queue.offer(head);
 		while (!queue.isEmpty()) {
-			Node cur = queue.poll();
-			System.out.println(cur.value);
-			if (cur.left != null) {
-				queue.add(cur.left);
+			Node poll = queue.poll();
+			System.out.println("  " + poll.value);
+			if (poll.left != null) {
+				queue.offer(poll.left);
 			}
-			if (cur.right != null) {
-				queue.add(cur.right);
+			if (poll.right != null) {
+				queue.offer(poll.right);
 			}
 		}
 	}

@@ -64,7 +64,17 @@ public class Code01_SelectionSort_copy {
 	}
 
 
-
+	public static void selectSort5(int[] arr) {
+		for (int i = 0; i < arr.length - 1; i++) {
+			int index = i;
+			for (int j = i + 1; j < arr.length;j++) {
+				if (arr[index] > arr[j]) {
+					index = j;
+				}
+			}
+			swap(arr, index, i);
+		}
+	}
 
 
 	// for test
@@ -137,7 +147,7 @@ public class Code01_SelectionSort_copy {
 			int[] arr1 = generateRandomArray(maxSize, maxValue);
 			int[] arr2 = copyArray(arr1);
 //			selectionSort(arr1);
-			selectSort(arr1);
+			selectSort5(arr1);
 			comparator(arr2);
 			if (!isEqual(arr1, arr2)) {
 				succeed = false;

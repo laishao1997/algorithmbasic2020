@@ -1,7 +1,6 @@
 package src.class20;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import javax.swing.*;
 
 // 测试链接：https://leetcode.com/problems/longest-palindromic-subsequence/
 public class Code01_PalindromeSubsequence_copy {
@@ -10,23 +9,22 @@ public class Code01_PalindromeSubsequence_copy {
         if (s == null || s.length() == 0) {
             return -1;
         }
-        char[] strs1 = s.toCharArray();
-        return process(strs1, 0, strs1.length - 1);
+        return process(s.toCharArray(), 0, s.length() - 1);
     }
 
     // str[L..R]最长回文子序列长度返回
-    private static int process(char[] strs1, int L, int R) {
+    public static int process(char[] arr, int L, int R) {
         if (L == R) {
-            return 1;
+            return arr[L] == arr[R] ? 1 : 0;
         }
         if (L == R - 1) {
-            return strs1[L] == strs1[R - 1] ? 2 : 1;
+            return arr[L] == arr[R] ? 2 : 1;
         }
-        int p1 = process(strs1, L + 1, R);
-        int p2 = process(strs1, L, R - 1);
-        int p3 = process(strs1, L + 1, R - 1);
-        int p4 = strs1[L] == strs1[R] ? (2 + process(strs1, L + 1, R - 1)) : 0;
-        return Math.max(Math.max(p1, p2), Math.max(p3, p4));
+        int p1 = process(arr, L, R - 1);
+        int p2 = process(arr, L + 1, R);
+        int p3 = process(arr, L + 1, R - 1);
+        int p4 = arr[L] == arr[R] ? (2 + process(arr, L + 1, R - 1)) : 0;
+        return Math.max(p1, Math.max(p2, Math.max(p3, p4)));
     }
 
     public static int lpsl2(String s) {
@@ -41,16 +39,13 @@ public class Code01_PalindromeSubsequence_copy {
             dp[i][i] = 1;
             dp[i][i + 1] = strs1[i] == strs1[i + 1] ? 2 : 1;
         }
-        // N - 1已经填过了
-        // N - 2 已经填过了
-        for (int i = N - 3; i >= 0; i--) {
-            // i 位置对角线填过了， i + 1填过了
-            for (int j = i + 2; j < N; j++) {
-                int p1 = dp[i + 1][j];
-                int p2 = dp[i][j - 1];
-                int p3 = dp[i + 1][j - 1];
-                int p4 = strs1[i] == strs1[j] ? (2 + dp[i + 1][j - 1]) : 0;
-                dp[i][j] = Math.max(Math.max(p1, p2), Math.max(p3, p4));
+        for (int L = N - 3; L >= 0; L--) {
+            for (int R = L + 2; R < N; R++) {
+                int p1 = dp[L][R - 1];
+                int p2 = dp[L + 1][R];
+                int p3 = dp[L + 1][R - 1];
+                int p4 = strs1[L] == strs1[R] ? (2 + dp[L + 1][R - 1]) : 0;
+                dp[L][R] =  Math.max(p1, Math.max(p2, Math.max(p3, p4)));
             }
         }
         return dp[0][N - 1];

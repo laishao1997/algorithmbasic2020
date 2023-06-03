@@ -22,7 +22,7 @@ public class Code04_BiggerThanRightTwice_copy_copy {
         int ans = 0;
         int winR = m + 1;
         for (int i = L; i <= m; i++) {
-            while (winR <= r && (long) arr[i] > (long) arr[winR] * 2) {
+            while (winR <= r && arr[i] > arr[winR] * 2) {
                 winR++;
             }
             ans += winR - m - 1;

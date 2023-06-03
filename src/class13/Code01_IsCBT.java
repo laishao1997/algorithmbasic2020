@@ -73,13 +73,13 @@ public class Code01_IsCBT {
 		int height = Math.max(leftInfo.height, rightInfo.height) + 1;
 		boolean isFull = leftInfo.isFull && rightInfo.isFull && leftInfo.height == rightInfo.height;
 		boolean isCBT = false;
-		if (leftInfo.isFull && rightInfo.isFull && leftInfo.height == rightInfo.height) {
+		if (leftInfo.isFull && rightInfo.isFull && leftInfo.height == rightInfo.height + 1) {
+			isCBT = true;
+		} else if (leftInfo.isFull && rightInfo.isCBT && leftInfo.height == rightInfo.height) {
 			isCBT = true;
 		} else if (leftInfo.isCBT && rightInfo.isFull && leftInfo.height == rightInfo.height + 1) {
 			isCBT = true;
-		} else if (leftInfo.isFull && rightInfo.isFull && leftInfo.height == rightInfo.height + 1) {
-			isCBT = true;
-		} else if (leftInfo.isFull && rightInfo.isCBT && leftInfo.height == rightInfo.height) {
+		} else if (leftInfo.isFull && rightInfo.isFull && leftInfo.height == rightInfo.height) {
 			isCBT = true;
 		}
 		return new Info(isFull, isCBT, height);

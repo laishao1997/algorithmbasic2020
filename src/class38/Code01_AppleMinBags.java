@@ -31,9 +31,28 @@ public class Code01_AppleMinBags {
 		return (apple - 18) / 8 + 3;
 	}
 
+
+	public static int minBags2(int N) {
+		if (N < 0) {
+			return -1;
+		}
+		int bag8 = (N >> 3);
+		int rest = N - (bag8 << 3);
+		while (bag8 >= 0) {
+			if (rest % 6 == 0) {
+				return bag8 + rest / 6;
+			} else {
+				bag8--;
+				rest += 8;
+			}
+		}
+		return -1;
+	}
+
+
 	public static void main(String[] args) {
 		for(int apple = 1; apple < 200;apple++) {
-			System.out.println(apple + " : "+ minBags(apple));
+			System.out.println(apple + " : "+ minBags2(apple));
 		}
 
 	}

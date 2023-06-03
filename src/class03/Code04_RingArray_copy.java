@@ -18,8 +18,9 @@ public class Code04_RingArray_copy {
 		}
 
 		public void push(int value) {
-			if (size == limit) {
-				throw new RuntimeException("满了");
+			if (limit == size) {
+				System.out.println("满了，不能放了");
+				return;
 			}
 			size++;
 			arr[pushi] = value;
@@ -27,8 +28,9 @@ public class Code04_RingArray_copy {
 		}
 
 		public int pop() {
-			if (isEmpty()) {
-				throw new RuntimeException("空了");
+			if (size == 0) {
+				System.out.println("空的，没有数");
+				return -1;
 			}
 			size--;
 			int ans = arr[popi];

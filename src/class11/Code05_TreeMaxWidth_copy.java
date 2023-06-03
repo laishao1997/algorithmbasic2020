@@ -56,11 +56,11 @@ public class Code05_TreeMaxWidth_copy {
 			return 0;
 		}
 		Queue<Node> queue = new LinkedList<>();
-		Node curEnd = head;	//当前层最后节点
-		Node nextEnd = null;	//下一层最后节点
-		int curLevelNum = 0;
-		int max = 0;
 		queue.add(head);
+		Node curEnd = head;
+		Node nextEnd = null;
+		int curLevelNodes = 0;
+		int max = 0;
 		while (!queue.isEmpty()) {
 			Node cur = queue.poll();
 			if (cur.left != null) {
@@ -71,10 +71,10 @@ public class Code05_TreeMaxWidth_copy {
 				queue.add(cur.right);
 				nextEnd = cur.right;
 			}
-			curLevelNum++;
+			curLevelNodes++;
 			if (cur == curEnd) {
-				max = Math.max(max, curLevelNum);
-				curLevelNum = 0;	//很关键，当前层节点数清0
+				max = Math.max(max, curLevelNodes);
+				curLevelNodes = 0;
 				curEnd = nextEnd;
 			}
 		}

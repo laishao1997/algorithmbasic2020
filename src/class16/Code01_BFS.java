@@ -1,4 +1,6 @@
-package class16;
+package src.class16;
+
+import src.class16.Code01_BFS_copy;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -25,6 +27,11 @@ public class Code01_BFS {
 				}
 			}
 		}
+	}
+
+	public static class Node {
+		public int value;
+		public Node[] nexts;
 	}
 
 }

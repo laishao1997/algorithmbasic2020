@@ -31,17 +31,14 @@ public class Code01_CoverMax_copy {
 		for (int i = 0; i < m.length; i++) {
 			lines[i] = new Line(m[i][0], m[i][1]);
 		}
-		//将线段按开始位置排序
 		Arrays.sort(lines, new StartComparator());
-		//小根堆
 		PriorityQueue<Integer> heap = new PriorityQueue<>();
 		int max = 0;
-		for (Line line : lines) {
-			//如果当前线段的开始位置大于等于小根堆里面的位置，则弹出
-			while (!heap.isEmpty() && heap.peek() <= line.start) {
+		for (int i = 0; i < lines.length; i++) {
+			while (!heap.isEmpty() && heap.peek() <= lines[i].start) {
 				heap.poll();
 			}
-			heap.add(line.end);
+			heap.add(lines[i].end);
 			max = Math.max(max, heap.size());
 		}
 		return max;

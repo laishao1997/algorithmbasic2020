@@ -64,17 +64,21 @@ public class Code02_IsBST_copy {
 		Info leftInfo = process(x.left);
 		Info rightInfo = process(x.right);
 		int max = x.value;
-		int min = x.value;
 		if (leftInfo != null) {
-			max = Math.max(leftInfo.max, max);
-			min = Math.min(leftInfo.min, min);
+			max = Math.max(max, leftInfo.max);
 		}
 		if (rightInfo != null) {
 			max = Math.max(max, rightInfo.max);
+		}
+		int min = x.value;
+		if (leftInfo != null) {
+			min = Math.min(min, leftInfo.min);
+		}
+		if (rightInfo != null) {
 			min = Math.min(min, rightInfo.min);
 		}
 		boolean isBST = true;
-		if (leftInfo != null && !leftInfo.isBST) {
+		if (leftInfo!= null && !leftInfo.isBST) {
 			isBST = false;
 		}
 		if (rightInfo != null && !rightInfo.isBST) {

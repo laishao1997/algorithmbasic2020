@@ -15,35 +15,34 @@ public class Code03_UnRecursiveTraversalBT_copy {
 	}
 
 	public static void pre(Node head) {
-		System.out.print("pre-order: ");
-		if (head != null) {
-			Stack<Node> stack = new Stack<>();
-			stack.push(head);
-			while (!stack.isEmpty()) {
-				head = stack.pop();
-				System.out.print(head.value + " ");
-				if (head.right != null) {
-					stack.push(head.right);
-				}
-				if (head.left != null) {
-					stack.push(head.left);
-				}
+		if (head == null) {
+			return;
+		}
+		Stack<Node> pre = new Stack<>();
+		pre.add(head);
+		while (!pre.isEmpty()) {
+			Node node = pre.pop();
+			System.out.println("先序遍历：" + node.value);
+			if (node.right != null) {
+				pre.push(node.right);
+			}
+			if (node.left != null) {
+				pre.push(node.left);
 			}
 		}
 		System.out.println();
 	}
 
 	public static void in(Node cur) {
-		System.out.print("in-order: ");
 		if (cur != null) {
-			Stack<Node> stack = new Stack<>();
-			while (!stack.isEmpty() || cur != null) {
+			Stack<Node> in = new Stack<>();
+			while (!in.isEmpty() || cur != null) {
 				if (cur != null) {
-					stack.push(cur);
+					in.push(cur);
 					cur = cur.left;
 				} else {
-					cur = stack.pop();
-					System.out.print(cur.value + " ");
+					cur = in.pop();
+					System.out.println("中序遍历" + cur.value);
 					cur = cur.right;
 				}
 			}
@@ -58,41 +57,39 @@ public class Code03_UnRecursiveTraversalBT_copy {
 			Stack<Node> s2 = new Stack<>();
 			s1.push(head);
 			while (!s1.isEmpty()) {
-				head = s1.pop();
-				s2.push(head);
-				if (head.left != null) {
-					s1.push(head.left);
+				Node cur = s1.pop();
+				s2.push(cur);
+				if (cur.left != null) {
+					s1.push(cur.left);
 				}
-				if (head.right != null) {
-					s1.push(head.right);
+				if (cur.right != null) {
+					s1.push(cur.right);
 				}
 			}
 			while (!s2.isEmpty()) {
-				System.out.print(s2.pop().value + " ");
+				System.out.println("后续遍历：" + s2.pop().value);
 			}
 		}
 		System.out.println();
 	}
 
 	public static void pos2(Node h) {
-		System.out.print("pos-order: ");
-		if (h != null) {
-			Stack<Node> stack = new Stack<Node>();
-			stack.push(h);
-			Node c = null;
-			while (!stack.isEmpty()) {
-				c = stack.peek();
-				if (c.left != null && h != c.left && h != c.right) {
-					stack.push(c.left);
-				} else if (c.right != null && h != c.right) {
-					stack.push(c.right);
-				} else {
-					System.out.print(stack.pop().value + " ");
-					h = c;
-				}
+		if (h == null) {
+			return;
+		}
+		Stack<Node> pos = new Stack<>();
+		pos.push(h);
+		while (!pos.isEmpty()) {
+			Node cur = pos.peek();
+			if (cur.left != null && cur.left != h && cur.right != h) {
+				pos.push(cur.left);
+			} else if (cur.right != null && cur.right != h) {
+				pos.push(cur.right);
+			} else {
+				System.out.println("后续遍历：" + pos.pop().value);
+				h = cur;
 			}
 		}
-		System.out.println();
 	}
 
 	public static void main(String[] args) {

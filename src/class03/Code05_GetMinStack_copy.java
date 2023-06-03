@@ -3,35 +3,37 @@ package src.class03;
 import java.util.Stack;
 
 public class Code05_GetMinStack_copy {
-	public static class MyStack1 {
-		private Stack<Integer> pushStatck;
-		private Stack<Integer> minStatck;
+	public static class MyStack1{
+		public static Stack<Integer> dataStack;
+		public static Stack<Integer> minStack;
 
 		public MyStack1() {
-			pushStatck = new Stack<>();
-			minStatck = new Stack<>();
+			dataStack = new Stack<>();
+			minStack = new Stack<>();
 		}
 
-		public void push(int newNum) {
-			pushStatck.push(newNum);
-			if (minStatck.empty()) {
-				minStatck.push(newNum);
-			} else {
-				minStatck.push(minStatck.peek() > newNum ? newNum : minStatck.peek());
+		public void push(int value) {
+			if (minStack.isEmpty()) {
+				minStack.push(value);
+			} else if (value < this.getmin()) {
+				minStack.push(value);
 			}
+			dataStack.push(value);
 		}
 
 		public int pop() {
-			if (this.pushStatck.isEmpty()) {
-				throw new RuntimeException("Your stack is empty.");
+			if (dataStack.isEmpty()) {
+				System.out.println("栈为空了");
 			}
-			int value = this.pushStatck.pop();
-			this.minStatck.pop();
+			int value = dataStack.pop();
+			if (value == getmin()) {
+				this.dataStack.pop();
+			}
 			return value;
 		}
 
 		public int getmin() {
-			return minStatck.peek();
+			return minStack.peek();
 		}
 	}
 

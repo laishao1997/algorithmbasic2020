@@ -1,6 +1,7 @@
 package src.class12;
 
 import java.util.LinkedList;
+import java.util.Queue;
 
 public class Code01_IsCBT_copy {
 
@@ -18,23 +19,17 @@ public class Code01_IsCBT_copy {
 		if (head == null) {
 			return true;
 		}
-		LinkedList<Node> queue = new LinkedList<>();
-		// 是否遇到过左右两个孩子不双全的节点
-		boolean leaf = false;
 		Node l = null;
 		Node r = null;
+		Queue<Node> queue = new LinkedList<>();
 		queue.add(head);
+		boolean lrEmpty = false;
 		while (!queue.isEmpty()) {
-			head = queue.poll();
-			l = head.left;
-			r = head.right;
-			if (
-			// 如果遇到了不双全的节点之后，又发现当前节点不是叶节点
-			    (leaf && (l != null || r != null)) 
-			    || 
-			    (l == null && r != null)
+			Node cur = queue.poll();
+			l = cur.left;
+			r = cur.right;
 
-			) {
+			if (lrEmpty && (l != null || r != null) || (l == null && r != null)) {
 				return false;
 			}
 			if (l != null) {
@@ -44,7 +39,7 @@ public class Code01_IsCBT_copy {
 				queue.add(r);
 			}
 			if (l == null || r == null) {
-				leaf = true;
+				lrEmpty = true;
 			}
 		}
 		return true;
@@ -82,14 +77,16 @@ public class Code01_IsCBT_copy {
 		if (isFull) {
 			isCBT = true;
 		} else {
-			if (leftInfo.isCBT && rightInfo.isFull && leftInfo.height == rightInfo.height + 1) {
-				isCBT = true;
-			}
-			if (leftInfo.isFull && rightInfo.isFull && leftInfo.height == rightInfo.height + 1) {
-				isCBT = true;
-			}
-			if (leftInfo.isFull && rightInfo.isCBT && leftInfo.height == rightInfo.height) {
-				isCBT = true;
+			if (leftInfo.isCBT && rightInfo.isCBT) {
+				if (leftInfo.isCBT && rightInfo.isFull && leftInfo.height == rightInfo.height + 1) {
+					isCBT = true;
+				}
+				if (leftInfo.isFull && rightInfo.isFull && leftInfo.height == rightInfo.height + 1) {
+					isCBT = true;
+				}
+				if (leftInfo.isFull && rightInfo.isCBT && leftInfo.height == rightInfo.height) {
+					isCBT = true;
+				}
 			}
 		}
 		return new Info(isFull, isCBT, height);

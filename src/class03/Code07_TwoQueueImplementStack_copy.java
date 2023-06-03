@@ -19,35 +19,32 @@ public class Code07_TwoQueueImplementStack_copy {
 			queue.add(value);
 		}
 
-		public T poll() {
-			while (queue.size() > 1) {
-				help.add(queue.poll());
-			}
-			T a = queue.poll();
-			Queue<T> tmp = null;
-			tmp = queue;
-			queue = help;
-			help = tmp;
-			return a;
-		}
-
 		public T peek() {
 			while (queue.size() > 1) {
-				help.add(queue.poll());
+				help.offer(queue.poll());
 			}
-			T a = queue.poll();
-			help.add(a);
-			Queue<T> tmp = null;
-			tmp = queue;
+			T ans = queue.poll();
+			help.offer(ans);
+			Queue<T> tmp = queue;
 			queue = help;
 			help = tmp;
-			return a;
+			return ans;
+		}
+
+		public T pop() {
+			while (queue.size() > 1) {
+				help.offer(queue.poll());
+			}
+			T ans = queue.poll();
+			Queue<T> tmp = queue;
+			queue = help;
+			help = tmp;
+			return ans;
 		}
 
 		public boolean isEmpty() {
 			return queue.isEmpty();
 		}
-
 	}
 
 	public static void main(String[] args) {
@@ -74,7 +71,7 @@ public class Code07_TwoQueueImplementStack_copy {
 						System.out.println("Oops");
 					}
 				} else if (Math.random() < 0.75) {
-					if (!myStack.poll().equals(test.pop())) {
+					if (!myStack.pop().equals(test.pop())) {
 						System.out.println("Oops");
 					}
 				} else {

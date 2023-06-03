@@ -10,7 +10,7 @@ public class Code04_LongestCommonSubsequence_copy {
         }
         char[] c1 = s1.toCharArray();
         char[] c2 = s2.toCharArray();
-        return process1(c1, c2, s1.length() - 1, s2.length() - 1);
+        return process1(c1, c2, c1.length - 1, c2.length - 1);
     }
 
     // str1[0...i]和str2[0...j]，这个范围上最长公共子序列长度是多少？
@@ -66,7 +66,7 @@ public class Code04_LongestCommonSubsequence_copy {
         } else {
             int p1 = process1(str1, str2, i - 1, j);
             int p2 = process1(str1, str2, i, j - 1);
-            int p3 = str1[i] == str2[j] ? 1 + process1(str1, str2, i - 1, j - 1) : 0;
+            int p3 = str1[i] == str2[j] ? (1 + process1(str1, str2, i - 1, j - 1)) : 0;
             return Math.max(p1, Math.max(p2, p3));
         }
     }
@@ -89,10 +89,10 @@ public class Code04_LongestCommonSubsequence_copy {
         }
         for (int i = 1; i < M; i++) {
             for (int j = 1; j < N; j++) {
-				int p1 = dp[i - 1][j];
-				int p2 = dp[i][j - 1];
-				int p3 = c1[i] == c2[j] ? (1 + dp[i - 1][j - 1]) : 0;
-            	dp[i][j] = Math.max(p1, Math.max(p2, p3));
+                int p1 = dp[i - 1][j];
+                int p2 = dp[i][j - 1];
+                int p3 = c1[i] == c2[j] ? (1 + dp[i - 1][j - 1]) : 0;
+                dp[i][j] = Math.max(p1, Math.max(p2, p3));
             }
         }
         return dp[M - 1][N - 1];

@@ -27,17 +27,17 @@ public class Code01_MergeSort_copy_copy {
 
     private static void merge(int[] arr, int l, int mid, int r) {
         int[] help = new int[r - l + 1];
-        int lindex = l;
-        int rindex = mid + 1;
-        int hindex = 0;
-        while (lindex <= mid && rindex <= r) {
-            help[hindex++] = arr[lindex] <= arr[rindex] ? arr[lindex++] : arr[rindex++];
+        int L = l;
+        int R = mid + 1;
+        int index = 0;
+        while (L <= mid && R <= r) {
+            help[index++] = arr[L] > arr[R] ? arr[L++] : arr[R++];
         }
-        while (lindex <= mid) {
-            help[hindex++] = arr[lindex++];
+        while (L <= mid) {
+            help[index++] = arr[L++];
         }
-        while (rindex <= r) {
-            help[hindex++] = arr[rindex++];
+        while (R <= r) {
+            help[index++] = arr[R++];
         }
         for (int i = 0; i < help.length; i++) {
             arr[l + i] = help[i];
@@ -45,30 +45,34 @@ public class Code01_MergeSort_copy_copy {
     }
 
 
+
+
+
+
     // 非递归方法实现
     public static void mergeSort2(int[] arr) {
         if (arr == null || arr.length < 2) {
             return;
         }
-		int N = arr.length;
+        int N = arr.length;
         int step = 1;//步长
-		while (step < N) {
-			int L = 0;//左组第一个数
-			while (L < N) {
-				//当剩下的数凑不齐左组的时候，将剩下的数交个下一次merge
-				if (step >= N - L) {
-					break;
-				}
-				int mid = L + step - 1;
-				int R = mid + Math.min(step, N - mid - 1);
-				merge(arr, L, mid, R);
-				L = R + 1;
-			}
-			if (step > N / 2) {//防止数据太大溢出，小数据不要这一句也可以
-				break;
-			}
-			step <<= 1;
-		}
+        while (step < N) {
+            int L = 0;//左组第一个数
+            while (L < N) {
+                //当剩下的数凑不齐左组的时候，将剩下的数交个下一次merge
+                if (step >= N - L) {
+                    break;
+                }
+                int mid = L + step - 1;
+                int R = mid + Math.min(step, N - mid - 1);
+                merge(arr, L, mid, R);
+                L = R + 1;
+            }
+            if (step > N / 2) {//防止数据太大溢出，小数据不要这一句也可以
+                break;
+            }
+            step <<= 1;
+        }
     }
 
     // for test

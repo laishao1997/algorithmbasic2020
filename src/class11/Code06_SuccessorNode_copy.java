@@ -20,12 +20,12 @@ public class Code06_SuccessorNode_copy {
 		if (node.right != null) {
 			return getLeftMost(node.right);
 		} else {
-			Node par = node.parent;
-			while (par != null && node == par.right) {
-				node = par;
-				par = par.parent;
+			Node parent = node.parent;
+			while (parent != null && parent.left != node) {
+				node = parent;
+				parent = parent.parent;
 			}
-			return par;
+			return parent;
 		}
 	}
 

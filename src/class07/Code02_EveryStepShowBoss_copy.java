@@ -32,22 +32,21 @@ public class Code02_EveryStepShowBoss_copy {
 
         @Override
         public int compare(Customer o1, Customer o2) {
-            return o1.buy != o2.buy ? (o1.buy - o2.buy) : (o1.enterTime - o2.enterTime);
+            return o1.buy != o2.buy ? (o1.buy - o2.buy) : o1.enterTime - o2.enterTime;
         }
-
     }
 
     public static class WhosYourDaddy {
         private HashMap<Integer, Customer> customers;
-        private HeapGreater<Customer> candHeap;
         private HeapGreater<Customer> daddyHeap;
-        private final int daddyLimit;
+        private HeapGreater<Customer> candHeap;
+        private int daddyLimit;
 
         public WhosYourDaddy(int limit) {
-            customers = new HashMap<Integer, Customer>();
-            candHeap = new HeapGreater<>(new CandidateComparator());
+            customers = new HashMap<>();
             daddyHeap = new HeapGreater<>(new DaddyComparator());
-            daddyLimit = limit;
+            candHeap = new HeapGreater<>(new CandidateComparator());
+            this.daddyLimit = limit;
         }
 
         // 当前处理i号事件，arr[i] -> id,  buyOrRefund
@@ -56,7 +55,7 @@ public class Code02_EveryStepShowBoss_copy {
                 return;
             }
             if (!customers.containsKey(id)) {
-                customers.put(id, new Customer(id, 0, 0));
+                customers.put(id, new Customer(id, 0 ,0));
             }
             Customer c = customers.get(id);
             if (buyOrRefund) {
@@ -67,7 +66,7 @@ public class Code02_EveryStepShowBoss_copy {
             if (c.buy == 0) {
                 customers.remove(id);
             }
-            if (!candHeap.contains(c) && !daddyHeap.contains(c)) {
+            if (!daddyHeap.contains(c) && !candHeap.contains(c)) {
                 if (daddyHeap.size() < daddyLimit) {
                     c.enterTime = time;
                     daddyHeap.push(c);
@@ -105,17 +104,17 @@ public class Code02_EveryStepShowBoss_copy {
                 return;
             }
             if (daddyHeap.size() < daddyLimit) {
-                Customer p = candHeap.pop();
-                p.enterTime = time;
-                daddyHeap.push(p);
+                Customer c = candHeap.pop();
+                c.enterTime = time;
+                daddyHeap.push(c);
             } else {
                 if (candHeap.peek().buy > daddyHeap.peek().buy) {
-                    Customer oldDaddy = daddyHeap.pop();
-                    Customer newDaddy = candHeap.pop();
-                    oldDaddy.enterTime = time;
-                    newDaddy.enterTime = time;
-                    daddyHeap.push(newDaddy);
-                    candHeap.push(oldDaddy);
+                    Customer newCustomer = candHeap.pop();
+                    Customer oldCustomer = daddyHeap.pop();
+                    oldCustomer.enterTime = time;
+                    newCustomer.enterTime = time;
+                    candHeap.push(oldCustomer);
+                    daddyHeap.push(newCustomer);
                 }
             }
         }
@@ -124,10 +123,10 @@ public class Code02_EveryStepShowBoss_copy {
 
     public static List<List<Integer>> topK(int[] arr, boolean[] op, int k) {
         List<List<Integer>> ans = new ArrayList<>();
-        WhosYourDaddy whoDaddies = new WhosYourDaddy(k);
+        WhosYourDaddy whosYourDaddy = new WhosYourDaddy(k);
         for (int i = 0; i < arr.length; i++) {
-            whoDaddies.operate(i, arr[i], op[i]);
-            ans.add(whoDaddies.getDaddies());
+            whosYourDaddy.operate(i, arr[i], op[i]);
+            ans.add(whosYourDaddy.getDaddies());
         }
         return ans;
     }
@@ -304,17 +303,16 @@ public class Code02_EveryStepShowBoss_copy {
      * T一定要是非基础类型，有基础类型需求包一层
      */
     public static class HeapGreater<T> {
+        private List<T> heap;
+        private HashMap<T, Integer> indexMap;
+        private int heapSize;
+        private Comparator<? super T> comp;
 
-        public ArrayList<T> heap;
-        public HashMap<T, Integer> indexMap;
-        public int heapSize;
-        public Comparator<? super T> comp;
-
-        public HeapGreater(Comparator<T> c) {
-            heap = new ArrayList<>();
+        public HeapGreater(Comparator<T> comp) {
+            this.heap = new ArrayList<>();
             indexMap = new HashMap<>();
-            heapSize = 0;
-            comp = c;
+            this.heapSize = 0;
+            this.comp = comp;
         }
 
         public boolean isEmpty() {
@@ -334,38 +332,35 @@ public class Code02_EveryStepShowBoss_copy {
         }
 
         public void push(T obj) {
-			heap.add(obj);
-			indexMap.put(obj, heapSize);
-			heapInsert(heapSize++);
+            heap.add(obj);
+            indexMap.put(obj, heapSize);
+            heapInsert(heapSize++);
         }
 
         public T pop() {
-        	T ans = null;
-        	ans = heap.get(0);
-        	swap(0, heapSize - 1);
-        	indexMap.remove(ans);
-        	heap.remove(--heapSize);
-        	heapify(0);
-        	return ans;
+            T ans = heap.get(0);
+            swap(0, heapSize - 1);
+            indexMap.remove(ans);
+            heap.remove(--heapSize);
+            heapify(0);
+            return ans;
         }
 
         public void remove(T obj) {
-			T replace = heap.get(heapSize - 1);
-			int index = indexMap.get(obj);
-			indexMap.remove(obj);
-			heap.remove(--heapSize);
-			if (replace != obj) {
-				heap.set(index, replace);
-				indexMap.put(replace, index);
-				resign(replace);
-			}
+            T repalce = heap.get(heapSize - 1);
+            int index = indexMap.get(obj);
+            indexMap.remove(obj);
+            heap.remove(--heapSize);
+            if (repalce != obj) {
+                indexMap.put(repalce, index);
+                heap.set(index, repalce);
+                resign(repalce);
+            }
         }
 
         public void resign(T obj) {
-        	//先看能不能网上调整
-			heapInsert(indexMap.get(obj));
-			//再看能不能往下调整
-			heapify(indexMap.get(obj));
+            heapInsert(indexMap.get(obj));
+            heapify(indexMap.get(obj));
         }
 
         // 请返回堆上的所有元素
@@ -387,24 +382,24 @@ public class Code02_EveryStepShowBoss_copy {
         private void heapify(int index) {
             int left = index * 2 + 1;
             while (left < heapSize) {
-                int leftflag = left + 1 < heapSize && comp.compare(heap.get(left + 1), heap.get(left)) < 0 ? (left + 1) : left;
-                leftflag = comp.compare(heap.get(index), heap.get(leftflag)) < 0 ? index : leftflag;
-                if (leftflag == index) {
+                int largest = left + 1 < heapSize && comp.compare(heap.get(left), heap.get(left + 1)) > 0 ? left + 1 : left;
+                largest = comp.compare(heap.get(largest), heap.get(index)) > 0 ? index : largest;
+                if (largest == index) {
                     break;
                 }
-                swap(leftflag, index);
-                index = leftflag;
+                swap(index, largest);
+                index = largest;
                 left = index * 2 + 1;
             }
         }
 
         private void swap(int i, int j) {
-            T t1 = heap.get(i);
-            T t2 = heap.get(j);
-            heap.set(i, t2);
-            heap.set(j, t1);
-            indexMap.put(t1, j);
-            indexMap.put(t2, i);
+            T o1 = heap.get(i);
+            T o2 = heap.get(j);
+            heap.set(i, o2);
+            heap.set(j, o1);
+            indexMap.put(o1, j);
+            indexMap.put(o2, i);
         }
 
     }

@@ -13,14 +13,7 @@ public class Code02_RecursiveTraversalBT_copy {
 	}
 
 	public static void f(Node head) {
-		if (head == null) {
-			return;
-		}
-		// 1
-		f(head.left);
-		// 2
-		f(head.right);
-		// 3
+
 	}
 
 	// 先序打印所有节点
@@ -28,7 +21,7 @@ public class Code02_RecursiveTraversalBT_copy {
 		if (head == null) {
 			return;
 		}
-		System.out.println(head.value);
+		System.out.println("先序打印：" + head.value);
 		pre(head.left);
 		pre(head.right);
 	}
@@ -38,7 +31,7 @@ public class Code02_RecursiveTraversalBT_copy {
 			return;
 		}
 		in(head.left);
-		System.out.println(head.value);
+		System.out.println("中序打印:" + head.value);
 		in(head.right);
 	}
 
@@ -48,7 +41,7 @@ public class Code02_RecursiveTraversalBT_copy {
 		}
 		pos(head.left);
 		pos(head.right);
-		System.out.println(head.value);
+		System.out.println("后续打印:" + head.value);
 	}
 
 	public static void main(String[] args) {

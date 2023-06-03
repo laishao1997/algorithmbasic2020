@@ -6,68 +6,70 @@ package src.class15;
 public class Code01_FriendCircles_copy {
 
     public static int findCircleNum(int[][] M) {
-		int N = M.length;
-		UnionFind union = new UnionFind(N);
-		for (int i = 0; i < N; i++) {
-			for (int j = i + 1; j < N; j++) {
-				if (M[i][i] == 1) {
-					union.union(i, j);
-				}
-			}
-		}
-		return union.sets();
+        if (M == null) {
+            return 0;
+        }
+        UnionFind unionFind = new UnionFind(M.length);
+        for (int i = 0; i < M.length; i++) {
+            for (int j = i + 1; j < M.length; j++) {
+                if (M[i][j] == 1) {
+                    unionFind.union(i, j);
+                }
+            }
+        }
+        return unionFind.sets();
     }
 
     public static class UnionFind {
-        private int[] parent;
-        private int[] size;
-        //辅助数组，用来做路径压缩
-        private int[] help;
-        private int sets;
+        //每个节点的父节点；i位置的父节点为parents[i]
+        public int[] parents;
+        //代表节点的size
+        public int[] sizeArr;
+        //用作栈
+        public int[] help;
+        public int size;
 
         private UnionFind(int N) {
-            parent = new int[N];
-            size = new int[N];
+            parents = new int[N];
+            sizeArr = new int[N];
             help = new int[N];
-            sets = N;
-            for (int i = 0; i < N; i++) {
-                parent[i] = i;
-                size[i] = 1;
+            size = N;
+            for (int i = 0 ; i < N; i++) {
+                parents[i] = i;
+                sizeArr[i] = 1;
             }
         }
 
         public int find(int i) {
-            int hi = 0;
-            //找到i的root父
-            while (i != parent[i]) {
-                help[hi++] = i;
-                i = parent[i];
+            int index = 0;
+            while (i != parents[i]) {
+                help[index++] = i;
+                i = parents[i];
             }
-            //把沿途所有的子节点的父亲都设为root父;
-			//路径压缩
-            for (hi--; hi >= 0; hi--) {
-                parent[help[hi]] = i;
+            //扁平化处理
+            while (index-- >= 0) {
+                parents[help[index--]] = i;
             }
             return i;
         }
 
         public void union(int i, int j) {
-        	int f1 = find(i);
-        	int f2 = find(j);
-        	if (f1 != f2) {
-        		if (size[f1] >= size[f2]) {
-        			size[f1] += size[f2];
-        			parent[f2] = f1;
-				} else {
-        			size[f2] += size[f1];
-        			parent[f1] = f2;
-				}
-				sets--;
-			}
+            int findi = find(i);
+            int findj = find(j);
+            if (findi != findj) {
+                if (sizeArr[i] >= sizeArr[j]) {
+                    parents[j] = i;
+                    sizeArr[i] += sizeArr[j];
+                } else {
+                    parents[i] = j;
+                    sizeArr[j] += sizeArr[i];
+                }
+            }
+            size--;
 		}
 
 		public int sets() {
-        	return sets;
+        	return size;
 		}
     }
 

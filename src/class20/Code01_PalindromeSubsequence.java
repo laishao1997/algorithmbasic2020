@@ -3,6 +3,15 @@ package class20;
 // 测试链接：https://leetcode.com/problems/longest-palindromic-subsequence/
 public class Code01_PalindromeSubsequence {
 
+	public static void main(String[] args) {
+		int cbbd = lpsl2("cbbd");
+		System.out.println(cbbd);
+	}
+
+
+
+
+	//最长回文串子序列，就是原str与逆序串的最长公共子序列就是最长回文子串
 	public static int lpsl1(String s) {
 		if (s == null || s.length() == 0) {
 			return 0;

@@ -15,32 +15,33 @@ public class Code06_TwoStacksImplementQueue_copy {
 
 		// push栈向pop栈倒入数据
 		private void pushToPop() {
-			if (!stackPop.empty()) {
+			if (!stackPop.isEmpty()) {
 				return;
 			}
-			while (!stackPush.empty()) {
+			while (!stackPush.isEmpty()){
 				stackPop.push(stackPush.pop());
 			}
 		}
 
 		public void add(int pushInt) {
-			stackPush.push(pushInt);
-			pushToPop();
+			stackPush.add(pushInt);
 		}
 
 		public int poll() {
-			if (stackPush.empty() && stackPop.empty()) {
-				throw new RuntimeException("空了");
-			}
 			pushToPop();
+			if (stackPop.isEmpty()) {
+				System.out.println("队列空了");
+				return -1;
+			}
 			return stackPop.pop();
 		}
 
 		public int peek() {
-			if (stackPush.empty() && stackPop.empty()) {
-				throw new RuntimeException("空了");
-			}
 			pushToPop();
+			if (stackPop.isEmpty()) {
+				System.out.println("队列空了");
+				return -1;
+			}
 			return stackPop.peek();
 		}
 	}

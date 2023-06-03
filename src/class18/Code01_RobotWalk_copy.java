@@ -21,12 +21,12 @@ public class Code01_RobotWalk_copy {
 			return cur == aim ? 1 : 0;
 		}
 		if (cur == 1) {
-			return process(N, cur + 1, aim, rest - 1);
+			return process(N, 2, aim, rest - 1);
 		}
 		if (cur == N) {
-			return process(N, cur - 1, aim, rest - 1);
+			return process(N, N - 1, aim, rest - 1);
 		}
-		return process(N, cur + 1, aim, rest - 1) + process(N, cur - 1, aim, rest - 1);
+		return process(N, cur - 1, aim, rest - 1) + process(N, cur + 1, aim, rest - 1);
 	}
 
 	public static int ways2(int N, int start, int aim, int K) {
@@ -77,7 +77,7 @@ public class Code01_RobotWalk_copy {
 		for (int rest = 1; rest <= K; rest++) {
 			dp[1][rest] = dp[2][rest - 1];
 			for (int cur = 2; cur < N; cur++) {
-				dp[cur][rest] = dp[cur + 1][rest - 1] + dp[cur - 1][rest - 1];
+				dp[cur][rest] = dp[cur - 1][rest - 1] + dp[cur + 1][rest - 1];
 			}
 			dp[N][rest] = dp[N - 1][rest - 1];
 		}

@@ -131,7 +131,6 @@ public class Code06_MaxDistance_copy {
             maxDistance = m;
             height = h;
         }
-
     }
 
     public static int maxDistance2(Node head) {

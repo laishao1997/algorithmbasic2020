@@ -1,4 +1,4 @@
-package class16;
+package src.class16;
 
 import java.util.Comparator;
 import java.util.HashSet;
