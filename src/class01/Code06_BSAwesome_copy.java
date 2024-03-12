@@ -1,4 +1,4 @@
-package class01;
+package src.class01;
 
 public class Code06_BSAwesome_copy {
 
@@ -15,12 +15,12 @@ public class Code06_BSAwesome_copy {
 		}
 		int L = 1;
 		int R = n - 2;
-		while (L < R) {
+		while(L < R) {
 			int mid = L + ((R - L) >> 1);
-			if (arr[mid + 1] < arr[mid]) {
-				L = mid + 1;
-			} else if (arr[mid - 1] < arr[mid]) {
+			if (arr[mid] > arr[mid - 1]) {
 				R = mid - 1;
+			} else if(arr[mid] > arr[mid + 1]) {
+				L = mid + 1;
 			} else {
 				return mid;
 			}
