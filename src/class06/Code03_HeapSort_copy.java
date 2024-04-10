@@ -10,28 +10,23 @@ public class Code03_HeapSort_copy {
 		if (arr == null || arr.length < 2) {
 			return;
 		}
-		// 自上而下建堆 O(N*logN)
 //		for (int i = 0; i < arr.length; i++) {
-//			heapInsert(arr, i);
+//			hepInsert(arr, i);
 //		}
-		// 自下而上建堆 O(N)
 		for (int i = arr.length - 1; i >= 0; i--) {
 			heapify(arr, i, arr.length);
 		}
 		int heapSize = arr.length;
-		// 交换堆顶与最后一个位置的元素
 		swap(arr, 0, --heapSize);
-		// O(N)
+		heapify(arr, 0, heapSize);
 		while (heapSize > 0) {
-			// O(logN)
-			heapify(arr, 0 ,heapSize);
-			// O(1)
 			swap(arr, 0, --heapSize);
+			heapify(arr, 0, heapSize);
 		}
 	}
 
-	public static void heapInsert(int[] arr, int index) {
-		while (arr[index] > arr[(index - 1) / 2]) {
+	public static void hepInsert(int[] arr, int index) {
+		while (index >= 0 && arr[index] > arr[(index - 1) / 2]) {
 			swap(arr, index, (index - 1) / 2);
 			index = (index - 1) / 2;
 		}
@@ -42,7 +37,7 @@ public class Code03_HeapSort_copy {
 		while (left < heapSize) {
 			int right = left + 1;
 			int largest = right < heapSize && arr[right] > arr[left] ? right : left;
-			largest = arr[index] < arr[largest] ? largest : index;
+			largest = arr[largest] > arr[index] ? largest : index;
 			if (largest == index) {
 				break;
 			}
