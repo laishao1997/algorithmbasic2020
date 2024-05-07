@@ -28,14 +28,14 @@ public class Code01_CoverMax_copy {
 
 	public static int maxCover2(int[][] m) {
 		Line[] lines = new Line[m.length];
-		int max = 0;
 		for (int i = 0; i < m.length; i++) {
 			lines[i] = new Line(m[i][0], m[i][1]);
 		}
 		Arrays.sort(lines, new StartComparator());
 		PriorityQueue<Integer> heap = new PriorityQueue<>();
+		int max = 0;
 		for (int i = 0; i < lines.length; i++) {
-			while (!heap.isEmpty() && heap.peek() <= lines[i].start) {
+			while(heap.size() > 0 && heap.peek() <= lines[i].start) {
 				heap.poll();
 			}
 			heap.add(lines[i].end);
